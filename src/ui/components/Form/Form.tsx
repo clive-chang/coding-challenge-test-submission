@@ -21,9 +21,10 @@ interface FormProps {
     formEntries: FormEntry[];
     onFormSubmit: (e: React.ChangeEvent<HTMLFormElement>) => void;
     submitText: string;
+    error?: string;
 }
 
-const Form: FunctionComponent<FormProps> = ({ label, loading, formEntries, onFormSubmit, submitText }) => {
+const Form: FunctionComponent<FormProps> = ({ label, loading, formEntries, onFormSubmit, submitText, error }) => {
     return (
         <form onSubmit={onFormSubmit}>
             <fieldset>
@@ -37,6 +38,8 @@ const Form: FunctionComponent<FormProps> = ({ label, loading, formEntries, onFor
                 <Button loading={loading} type="submit">
                     {submitText}
                 </Button>
+                {/* TODO: Create an <ErrorMessage /> component for displaying an error message */}
+                <ErrorMessage error={error || ''} />
             </fieldset>
         </form>
     );

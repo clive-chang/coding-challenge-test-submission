@@ -124,6 +124,7 @@ function App() {
             ]}
             onFormSubmit={handleAddressSubmit}
             submitText="Find"
+            error={addressError}
         />
         {addresses.length > 0 &&
           addresses.map((address) => {
@@ -153,11 +154,9 @@ function App() {
                 ]}
                 onFormSubmit={handlePersonSubmit}
                 submitText="Add to addressbook"
+                error={error}
             />
         ) : null}
-
-        {/* TODO: Create an <ErrorMessage /> component for displaying an error message */}
-        {error && <div className="error">{error}</div>}
 
         {/* TODO: Add a button to clear all form fields. 
         Button must look different from the default primary button, see design. 
