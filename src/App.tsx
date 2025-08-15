@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, ChangeEvent } from "react";
 
 import Address from "@/components/Address/Address";
 import AddressBook from "@/components/AddressBook/AddressBook";
@@ -9,8 +9,9 @@ import Section from "@/components/Section/Section";
 import useAddressBook from "@/hooks/useAddressBook";
 
 import styles from "./App.module.css";
-import { AddressForm, Address as AddressType } from "./types";
+import { AddressForm, AddressResponse, Address as AddressType } from "./types";
 import { useFormField } from "@/hooks/useFormField";
+import transformAddress from "./core/models/address";
 
 function App() {
   /**
@@ -24,7 +25,6 @@ function App() {
   const {
     fieldValues: { postCode, houseNumber, firstName, lastName, selectedAddress },
     handleFieldChange,
-    clearFieldValues,
 } = useFormField<AddressForm>({
     postCode: '',
     houseNumber: '',
@@ -35,8 +35,10 @@ function App() {
   /**
    * Results states
    */
-  const [error, setError] = React.useState<undefined | string>(undefined);
-  const [addresses, setAddresses] = React.useState<AddressType[]>([]);
+  const [addressError, setAddressError] = useState<undefined | string>(undefined);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<undefined | string>(undefined);
+  const [addresses, setAddresses] = useState<AddressType[]>([]);
   /**
    * Redux actions
    */
@@ -55,9 +57,26 @@ function App() {
    * - Ensure to clear previous search results on each click
    * - Bonus: Add a loading state in the UI while fetching addresses
    */
-  const handleAddressSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
+  const handleAddressSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-  };
+    setAddresses([]);
+    setLoading(true);
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/getAddresses?postcode=${postCode}&streetnumber=${houseNumber}`);
+    const data = (await response.json()) as AddressResponse;
+    if ('status' in data && data.status === 'ok') {
+        if (data.details) {
+            setAddressError(undefined);
+            const transformedAddresses = data.details.map(transformAddress);
+            setAddresses(transformedAddresses);
+        }
+    } else {
+        // handle error
+        setAddressError(data.errormessage);
+    }
+
+    setLoading(false);
+};
 
   /** TODO: Add basic validation to ensure first name and last name fields aren't empty
    * Use the following error message setError("First name and last name fields mandatory!")
