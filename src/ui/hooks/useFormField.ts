@@ -9,8 +9,13 @@ export function useFormField<T>(initialValues: T) {
             [e.target.name]: e.target.value,
         });
 
+    const clearFieldValues = () => {
+        setFieldValues(initialValues);
+    };
+
     return {
         fieldValues,
         handleFieldChange,
+        clearFieldValues,
     };
 }
