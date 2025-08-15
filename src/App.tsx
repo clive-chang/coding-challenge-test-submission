@@ -9,7 +9,8 @@ import Section from "@/components/Section/Section";
 import useAddressBook from "@/hooks/useAddressBook";
 
 import styles from "./App.module.css";
-import { Address as AddressType } from "./types";
+import { AddressForm, Address as AddressType } from "./types";
+import { useFormField } from "@/hooks/useFormField";
 
 function App() {
   /**
@@ -20,11 +21,17 @@ function App() {
    * - Remove all individual React.useState
    * - Remove all individual onChange handlers, like handlePostCodeChange for example
    */
-  const [postCode, setPostCode] = React.useState("");
-  const [houseNumber, setHouseNumber] = React.useState("");
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
-  const [selectedAddress, setSelectedAddress] = React.useState("");
+  const {
+    fieldValues: { postCode, houseNumber, firstName, lastName, selectedAddress },
+    handleFieldChange,
+    clearFieldValues,
+} = useFormField<AddressForm>({
+    postCode: '',
+    houseNumber: '',
+    firstName: '',
+    lastName: '',
+    selectedAddress: '',
+});
   /**
    * Results states
    */
@@ -38,21 +45,6 @@ function App() {
   /**
    * Text fields onChange handlers
    */
-  const handlePostCodeChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setPostCode(e.target.value);
-
-  const handleHouseNumberChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setHouseNumber(e.target.value);
-
-  const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setFirstName(e.target.value);
-
-  const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setLastName(e.target.value);
-
-  const handleSelectedAddressChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => setSelectedAddress(e.target.value);
 
   /** TODO: Fetch addresses based on houseNumber and postCode using the local BE api
    * - Example URL of API: ${process.env.NEXT_PUBLIC_URL}/api/getAddresses?postcode=1345&streetnumber=350
@@ -109,7 +101,7 @@ function App() {
             <div className={styles.formRow}>
               <InputText
                 name="postCode"
-                onChange={handlePostCodeChange}
+                onChange={handleFieldChange}
                 placeholder="Post Code"
                 value={postCode}
               />
@@ -117,7 +109,7 @@ function App() {
             <div className={styles.formRow}>
               <InputText
                 name="houseNumber"
-                onChange={handleHouseNumberChange}
+                onChange={handleFieldChange}
                 value={houseNumber}
                 placeholder="House number"
               />
@@ -132,7 +124,7 @@ function App() {
                 name="selectedAddress"
                 id={address.id}
                 key={address.id}
-                onChange={handleSelectedAddressChange}
+                onChange={handleFieldChange}
               >
                 <Address {...address} />
               </Radio>
@@ -147,7 +139,7 @@ function App() {
                 <InputText
                   name="firstName"
                   placeholder="First name"
-                  onChange={handleFirstNameChange}
+                  onChange={handleFieldChange}
                   value={firstName}
                 />
               </div>
@@ -155,7 +147,7 @@ function App() {
                 <InputText
                   name="lastName"
                   placeholder="Last name"
-                  onChange={handleLastNameChange}
+                  onChange={handleFieldChange}
                   value={lastName}
                 />
               </div>
