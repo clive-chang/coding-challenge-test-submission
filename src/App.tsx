@@ -12,6 +12,7 @@ import styles from "./App.module.css";
 import { AddressForm, AddressResponse, Address as AddressType } from "./types";
 import { useFormField } from "@/hooks/useFormField";
 import transformAddress from "./core/models/address";
+import Form from "@/components/Form/Form";
 
 function App() {
   /**
@@ -114,28 +115,16 @@ function App() {
           </small>
         </h1>
         {/* TODO: Create generic <Form /> component to display form rows, legend and a submit button  */}
-        <form onSubmit={handleAddressSubmit}>
-          <fieldset>
-            <legend>🏠 Find an address</legend>
-            <div className={styles.formRow}>
-              <InputText
-                name="postCode"
-                onChange={handleFieldChange}
-                placeholder="Post Code"
-                value={postCode}
-              />
-            </div>
-            <div className={styles.formRow}>
-              <InputText
-                name="houseNumber"
-                onChange={handleFieldChange}
-                value={houseNumber}
-                placeholder="House number"
-              />
-            </div>
-            <Button type="submit">Find</Button>
-          </fieldset>
-        </form>
+        <Form
+            label="🏠 Find an address"
+            loading={loading}
+            formEntries={[
+                { name: 'postCode', placeholder: 'Post Code', extraProps: { onChange: handleFieldChange, value: postCode } },
+                { name: 'houseNumber', placeholder: 'House number', extraProps: { onChange: handleFieldChange, value: houseNumber } },
+            ]}
+            onFormSubmit={handleAddressSubmit}
+            submitText="Find"
+        />
         {addresses.length > 0 &&
           addresses.map((address) => {
             return (
@@ -150,30 +139,22 @@ function App() {
             );
           })}
         {/* TODO: Create generic <Form /> component to display form rows, legend and a submit button  */}
-        {selectedAddress && (
-          <form onSubmit={handlePersonSubmit}>
-            <fieldset>
-              <legend>✏️ Add personal info to address</legend>
-              <div className={styles.formRow}>
-                <InputText
-                  name="firstName"
-                  placeholder="First name"
-                  onChange={handleFieldChange}
-                  value={firstName}
-                />
-              </div>
-              <div className={styles.formRow}>
-                <InputText
-                  name="lastName"
-                  placeholder="Last name"
-                  onChange={handleFieldChange}
-                  value={lastName}
-                />
-              </div>
-              <Button type="submit">Add to addressbook</Button>
-            </fieldset>
-          </form>
-        )}
+        {selectedAddress ? (
+            <Form
+                label="✏️ Add personal info to address"
+                loading={loading}
+                formEntries={[
+                    { name: 'firstName', placeholder: 'First name', extraProps: { onChange: handleFieldChange, value: firstName } },
+                    {
+                        name: 'lastName',
+                        placeholder: 'Last name',
+                        extraProps: { onChange: handleFieldChange, value: lastName },
+                    },
+                ]}
+                onFormSubmit={handlePersonSubmit}
+                submitText="Add to addressbook"
+            />
+        ) : null}
 
         {/* TODO: Create an <ErrorMessage /> component for displaying an error message */}
         {error && <div className="error">{error}</div>}

@@ -1,31 +1,18 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent } from 'react';
+import cx from 'classnames';
 
-import $ from "./InputText.module.css";
+import $ from './InputText.module.css';
 
-interface InputTextProps {
-  name: string;
-  placeholder: string;
-  value: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+interface InputTextProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'name' | 'placeholder' | 'value' | 'onChange'> {
+    name: string;
+    placeholder: string;
+    value: string;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const InputText: FunctionComponent<InputTextProps> = ({
-  name,
-  onChange,
-  placeholder,
-  value,
-}) => {
-  return (
-    <input
-      aria-label={name}
-      className={$.inputText}
-      name={name}
-      onChange={onChange}
-      placeholder={placeholder}
-      type="text"
-      value={value}
-    />
-  );
+const InputText: FunctionComponent<InputTextProps> = (props) => {
+    const mergedClasses = cx(props.className, $.inputText);
+    return <input {...props} aria-label={props.name} className={mergedClasses} type="text" />;
 };
 
 export default InputText;
