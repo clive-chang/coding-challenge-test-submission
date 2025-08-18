@@ -22,7 +22,7 @@ export const addressBookSlice = createSlice({
             const buildAddressKeys = (address: Address) =>
                 `${address.city}|${address.firstName}|${address.houseNumber}|${address.lastName}|${address.postcode}|${address.street}`
                     .trim()
-                    .toLowerCase();
+                    .toLowerCase(); // build and normalizse
             const newKey = buildAddressKeys(action.payload);
             const isDuplicate = state.addresses.some((address) => buildAddressKeys(address) === newKey);
             !isDuplicate && state.addresses.push(action.payload);
