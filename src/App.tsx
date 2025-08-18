@@ -29,7 +29,7 @@ function App() {
     const {
         fieldValues: { postCode, houseNumber, firstName, lastName, selectedAddress },
         handleFieldChange,
-        clearFieldValues,
+        clearForm,
     } = useFormField<AddressForm>({
         postCode: '',
         houseNumber: '',
@@ -114,7 +114,7 @@ function App() {
     const handleClearForm = () => {
         setAddressError(undefined);
         setError(undefined);
-        clearFieldValues();
+        clearForm();
         setAddresses([]);
     };
 
