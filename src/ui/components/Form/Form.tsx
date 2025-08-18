@@ -22,11 +22,12 @@ interface FormProps {
     onFormSubmit: (e: React.ChangeEvent<HTMLFormElement>) => void;
     submitText: string;
     error?: string;
+    testId?: string;
 }
 
-const Form: FunctionComponent<FormProps> = ({ label, loading, formEntries, onFormSubmit, submitText, error }) => {
+const Form: FunctionComponent<FormProps> = ({ label, loading, formEntries, onFormSubmit, submitText, error, testId }) => {
     return (
-        <form onSubmit={onFormSubmit}>
+        <form onSubmit={onFormSubmit} data-testid={testId}>
             <fieldset>
                 <legend>{label}</legend>
                 {formEntries.map(({ name, placeholder, extraProps }, index) => (

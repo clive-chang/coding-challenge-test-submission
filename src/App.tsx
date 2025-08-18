@@ -70,16 +70,21 @@ function App() {
         setLoading(true);
 
         const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/getAddresses?postcode=${postCode}&streetnumber=${houseNumber}`);
-        const data = (await response.json()) as AddressResponse;
-        if ('status' in data && data.status === 'ok') {
-            if (data.details) {
-                setAddressError(undefined);
-                const transformedAddresses = data.details.map(transformAddress);
-                setAddresses(transformedAddresses);
+
+        if (response.ok) {
+            const data = (await response.json()) as AddressResponse;
+            if ('status' in data && data.status === 'ok') {
+                if (data.details) {
+                    setAddressError(undefined);
+                    const transformedAddresses = data.details.map(transformAddress);
+                    setAddresses(transformedAddresses);
+                }
+            } else {
+                // handle error
+                setAddressError(data.errormessage);
             }
         } else {
-            // handle error
-            setAddressError(data.errormessage);
+            setAddressError('An error has occured, please try again');
         }
 
         setLoading(false);
@@ -137,6 +142,7 @@ function App() {
                     onFormSubmit={handleAddressSubmit}
                     submitText="Find"
                     error={addressError}
+                    testId="address-form"
                 />
                 {addresses.length > 0
                     ? addresses.map((address) => {
@@ -164,6 +170,7 @@ function App() {
                             onFormSubmit={handlePersonSubmit}
                             submitText="Add to addressbook"
                             error={error}
+                            testId="personal-info-form"
                         />
                     </>
                 ) : null}
