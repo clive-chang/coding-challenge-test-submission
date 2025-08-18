@@ -7,7 +7,6 @@ import Radio from '@/components/Radio/Radio';
 import Section from '@/components/Section/Section';
 import useAddressBook from '@/hooks/useAddressBook';
 
-import styles from './App.module.css';
 import { Address as AddressType, AddressResponse, AddressForm } from './types';
 import { useFormField } from '@/hooks/useFormField';
 import transformAddress from './core/models/address';
@@ -95,6 +94,11 @@ function App() {
 
         if (!foundAddress) {
             setError('Selected address not found');
+            return;
+        }
+
+        if (!firstName || !lastName) {
+            setError('First name and last name fields mandatory!');
             return;
         }
 
