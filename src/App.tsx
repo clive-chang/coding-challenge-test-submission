@@ -22,6 +22,10 @@ function App() {
      * - Remove all individual onChange handlers, like handlePostCodeChange for example
      */
 
+    /**
+     * Form field states
+     */
+
     const {
         fieldValues: { postCode, houseNumber, firstName, lastName, selectedAddress },
         handleFieldChange,
@@ -33,6 +37,7 @@ function App() {
         lastName: '',
         selectedAddress: '',
     });
+
     /**
      * Results states
      */
@@ -40,6 +45,7 @@ function App() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<undefined | string>(undefined);
     const [addresses, setAddresses] = useState<AddressType[]>([]);
+
     /**
      * Redux actions
      */
@@ -169,7 +175,7 @@ function App() {
         error messages
         */}
                 <Button type="button" variant="secondary" onClick={handleClearForm}>
-                    {'Clear all fields'}
+                    Clear all fields
                 </Button>
             </Section>
 
