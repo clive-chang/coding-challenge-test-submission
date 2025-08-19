@@ -22,7 +22,7 @@ export default function useAddressBook() {
         addAddress: (address: Address) => {
             dispatch(addAddress(address));
         },
-        /** Remove address by ID from the redux store */
+        /** Remove address by entryID from the redux store */
         removeAddress: (id: string) => {
             dispatch(removeAddress(id));
         },

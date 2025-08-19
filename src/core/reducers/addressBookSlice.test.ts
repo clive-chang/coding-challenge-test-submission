@@ -25,10 +25,12 @@ it('prevents duplicates by composite id', () => {
     expect(newState.addresses).toHaveLength(1);
 });
 
-it('should remove an address by id', () => {
-    const mockAddress2 = {...mockAddress, id: "2"};
-    const state: CounterState = { addresses: [mockAddress, mockAddress2] };
-    const newState = reducer(state, removeAddress("1"));
+it('should remove an address by entryId', () => {
+    const mockAddress1 = {...mockAddress, id: '1', firstName: 'John', entryId: "uid1"};
+    const mockAddress2 = {...mockAddress, id: '1', firstName: 'Jane', entryId: "uid2"};
+    const state: CounterState = { addresses: [mockAddress1, mockAddress2] };
+    const newState = reducer(state, removeAddress("uid2")); //removing mockAddress2
     expect(newState.addresses).toHaveLength(1);
-    expect(newState.addresses[0].id).toBe("2");
+    expect(newState.addresses.find(a => a.entryId === 'uid2')).toBeUndefined();
+    expect(newState.addresses[0].entryId).toBe("uid1");
 });

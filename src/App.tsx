@@ -69,13 +69,13 @@ function App() {
         setAddresses([]);
         setLoading(true);
 
-        if(!postCode || !houseNumber) {
+        if (!postCode || !houseNumber) {
             setAddressError('Please enter a valid postcode and house number');
             setLoading(false);
             return;
         }
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/getAddresses?postcode=${postCode}&streetnumber=${houseNumber}`);        
+        const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/getAddresses?postcode=${postCode}&streetnumber=${houseNumber}`);
         if (response.ok) {
             const data = (await response.json()) as AddressResponse;
             if ('status' in data && data.status === 'ok') {
@@ -118,7 +118,10 @@ function App() {
             return;
         }
 
-        addAddress({ ...foundAddress, firstName, lastName });
+        // Generate a random unique entry id for use case where the user adds the same address twice with different name
+        const entryId = crypto?.randomUUID?.() ?? `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+
+        addAddress({ ...foundAddress, firstName, lastName, entryId });
     };
 
     const handleClearForm = () => {

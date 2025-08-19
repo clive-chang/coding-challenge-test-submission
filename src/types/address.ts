@@ -8,6 +8,7 @@ export interface Address {
     lastName: string;
     postcode: string;
     street: string;
+    entryId?: string;
 }
 
 export interface AddressResponse {
