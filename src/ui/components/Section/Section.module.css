@@ -5,8 +5,14 @@
   color: var(--color-text);
   margin: 3rem auto;
   max-width: var(--width-content);
-  padding: 2rem 3rem;
+  padding: 1.5rem 2rem;
   width: 100%;
+}
+
+@media(min-width: 576px) {
+  .section {
+    padding: 2rem 3rem;
+  }
 }
 
 .dark {
