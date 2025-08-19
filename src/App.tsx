@@ -69,8 +69,13 @@ function App() {
         setAddresses([]);
         setLoading(true);
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/getAddresses?postcode=${postCode}&streetnumber=${houseNumber}`);
+        if(!postCode || !houseNumber) {
+            setAddressError('Please enter a valid postcode and house number');
+            setLoading(false);
+            return;
+        }
 
+        const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/getAddresses?postcode=${postCode}&streetnumber=${houseNumber}`);        
         if (response.ok) {
             const data = (await response.json()) as AddressResponse;
             if ('status' in data && data.status === 'ok') {
