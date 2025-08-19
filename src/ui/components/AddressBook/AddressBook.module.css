@@ -1,24 +1,38 @@
 .addressBook {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .remove {
-  --color-brand: var(--color-accent);
-  margin-left: auto;
+    background-color: transparent;
+    --color-brand: var(--color-accent);
+    display: flex;
+    align-items: center;
+}
+
+@media(max-width: 576px) {
+  .remove {
+    justify-content: flex-start;
+  }
 }
 
 .item {
-  align-items: center;
-  display: flex;
-  gap: 1rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+}
+
+@media (max-width: 576px) {
+    .item {
+        flex-direction: column;
+    }
 }
 
 .item address {
-  font-size: 0.85em;
+    font-size: 0.85em;
 }
 
 .item h3 {
-  margin: 0 0 0.5em;
+    margin: 0 0 0.5em;
 }

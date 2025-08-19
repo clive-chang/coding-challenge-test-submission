@@ -43,7 +43,13 @@ body {
 }
 
 main {
-    padding: 2rem;
+    padding: 1.5rem;
+}
+
+@media (min-width: 576px) {
+    main {
+        padding: 2rem;
+    }
 }
 
 small {
